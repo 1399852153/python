@@ -17,9 +17,11 @@ def download(url,user_agent=user_agent,retryCount=2):
 	except urllib.error.HTTPError as e:
 		print(e.reason);
 		
-		if (retryCount > 0) 
+		if (retryCount > 0):
 			if (hasattr(e,"code")) and (500<=e.code and e.code<=599):
-			print('retry download ===== code=' + str(e.code));
-			download(url,retryCount-1);
+				print('retry download ===== code=' + str(e.code));
+				return download(url,retryCount-1);
+			else:
+				return None;
 		else:
 			return None;
