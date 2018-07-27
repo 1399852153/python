@@ -1,8 +1,7 @@
-import util
+import crawlerUtil
 
-html = util.download('http://httpstat.us/501')
+# crawlerUtil.linked_download('http://example.webscraping.com', '/(index|view)')
 
-if html:
-	print(html.decode('utf-8'))
+
 
 
