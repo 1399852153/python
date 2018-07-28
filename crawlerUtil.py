@@ -10,7 +10,8 @@ default_user_agent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) ' \
 def download(url, user_agent=default_user_agent, retry_count=2):
     # 下载url对应的网页
 
-    print('download: ' + url + 'retryCount=' + str(retry_count))
+    print('download: ' + url + ' retryCount=' + str(retry_count))
+
     try:
         header = {
             'User-Agent': user_agent
@@ -43,6 +44,7 @@ def linked_download(seed_url, linked_rex):
 
     print("linked_download start")
 
+    searched_urls = set()
     url_list = [seed_url]
 
     while url_list:
@@ -50,12 +52,17 @@ def linked_download(seed_url, linked_rex):
         html = download(url)
 
         linked_urls = get_linked_url(html.decode('utf-8'))
-        print(linked_urls)
 
         # 将符合规则的a标签加入url列表,继续遍历
         for url_item in linked_urls:
-            if re.match(linked_rex, url_item):
-                url_item = urlparse.urljoin(seed_url,url_item)
-                url_list.append(url_item)
+            # 是否符合规则
+            if re.search(linked_rex, url_item):
+                # 是否还未被爬取过
+                if url_item not in searched_urls:
+                    # 将已经爬取过的网页保存起来
+                    searched_urls.add(url_item)
+
+                    url_item = urlparse.urljoin(seed_url,url_item)
+                    url_list.append(url_item)
 
 
