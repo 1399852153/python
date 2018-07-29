@@ -10,7 +10,7 @@ bad_user_agent = 'BadCrawler'
 
 crawlerUtil.linked_download(
     'http://example.webscraping.com',
-    '/(index|view)/', bad_user_agent)
+    '/(index|view)/', good_user_agent, max_depth=1)
 
 
 
